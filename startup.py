@@ -1,5 +1,5 @@
 # This file is based on templates provided and copyrighted by Autodesk, Inc.
-# This file has been modified by Epic Games, Inc. and is subject to the license 
+# This file has been modified by Epic Games, Inc. and is subject to the license
 # file included in this repository.
 
 import os
@@ -55,11 +55,11 @@ class EngineLauncher(SoftwareLauncher):
         # (the command-line arguments are forwarded to the new instance of Unreal Editor)
         unreal_project = ""
         args = args + unreal_project
-        
+
         # Set the bootstrap location in the environment variable that will be used by the Unreal Shotgun startup script
         bootstrap_script = os.path.join(self.disk_location, "plugins", "basic", "bootstrap.py")
         required_env["UE_SHOTGUN_BOOTSTRAP"] = bootstrap_script
-        
+
         self.logger.debug("Executable path: %s", exec_path)
         self.logger.debug("Launch environment: %s", pprint.pformat(required_env))
         self.logger.debug("Launch arguments: %s", args)
@@ -115,7 +115,7 @@ class EngineLauncher(SoftwareLauncher):
         :returns: List of :class:`SoftwareVersion` instances
         """
         print("Finding Unreal Engine executables")
-        
+
         # Determine a list of paths to search for Unreal Editor executables based on the windows registry
         search_paths = _get_installation_paths_from_registry(self.logger)
         sw_versions = self._get_software_from_search_paths(search_paths, "Unreal Engine")
@@ -125,7 +125,7 @@ class EngineLauncher(SoftwareLauncher):
         sw_versions = sw_versions + self._get_software_from_search_paths(search_paths, "Unreal Engine (Dev Build)")
 
         return sw_versions
-        
+
     def _get_software_from_search_paths(self, search_paths, display_name):
         sw_versions = []
         for search_path in search_paths:
@@ -143,14 +143,14 @@ class EngineLauncher(SoftwareLauncher):
                     exec_path,
                     os.path.join(self.disk_location, "icon_256.png")
                 ))
-        
+
         return sw_versions
-        
+
     def _find_exec_and_version(self, root_path):
         # With the given root path, check if there's an Unreal executable in it and its version
         binary_folder = "Engine\\Binaries\\Win64"
-        executable_filename = "UE4Editor.exe"
-        version_filename = "UE4Editor.version"
+        executable_filename = "UnrealEditor.exe"
+        version_filename = "UnrealEditor.version"
 
         # Construct the expected executable name for this root path.
         exec_path = os.path.join(root_path, binary_folder, executable_filename)
@@ -160,7 +160,7 @@ class EngineLauncher(SoftwareLauncher):
 
         if os.path.exists(exec_path):
             self.logger.debug("Found executable in installation path %s" % exec_path)
-            
+
             if os.path.exists(versionfile_path):
                 self.logger.debug("Version file found in installation path %s" % versionfile_path)
             else:
@@ -191,7 +191,7 @@ class EngineLauncher(SoftwareLauncher):
                     "Resolved version '%s' from executable '%s'." %
                     (executable_version, exec_path)
             )
-            
+
         return exec_path, executable_version
 
 def _get_installation_paths_from_registry(logger):
@@ -269,4 +269,3 @@ def _get_development_builds_paths_from_registry(logger):
         logger.error("error opening key %s" % base_key_name)
 
     return install_paths
-    
